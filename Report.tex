@@ -151,6 +151,36 @@ new server allocations.
 
 \section{Architecture}
 
+\subsection{Discussion}
+There exists an almost infinite way to configure the nodes in our architecture. 
+To avoid aquiring technical debt it is
+of the upmost importance to derive an architecture fitting of our needs.
+Therefor we have derived a simple set of architectural guidelines.
+
+\begin{itemize}
+    \item \textbf{Load Balancing}: The service must be able to efficiently balance load. No parts of the service can choke due to increased load.
+    \item \textbf{Scalability}: All parts of the service must be able to scale as needed to account for increases in load.
+    \item \textbf{Security}: The microservices must pass data to eachother in a secure manner.
+    \item \textbf{Simplicity}: There should be no unnecesary complexity.
+\end{itemize}
+
+The simplest way for microservices to pass data to each other is trough the user in the form of
+JSON web tokens. The following scenarios can be solved using both JSON web tokens and direct communication between the micro services.
+
+\begin{itemize}
+    \item \textbf{False metrics}: If metrics are not derived from the content management service but the client instead. False metrics might be reported by bad actors.
+    \item \textbf{Non existing content IDs}: If content IDs in the metadata management services manifest is not derived from the content management service. Metadata might be created for content that does not exist.
+\end{itemize}
+
+\subsubsection{Load Balancing}
+There are an infinte ammount of strategies for balancing load in services consisting of multiple nodes.
+And there is much to be gained from utilizing lower level protocols to achieve this. Using GoodDNS solves
+two problems, it lowers the bandwidth required as the DNS protocol as outlined in RFC 1035 is extremely light weight.
+DNS also removes the need for proxying data allowing clients to communicate directly with the relevant services.
+This makes for a much more reliable service as we don`t have to rely on NGINX or Apaches ability to proxy data.
+
+\subsection{Nodes}
+
 \textit{Figure \ref{fig:AR}} shows a service consisting of the following microservices:
 
 \begin{itemize}
@@ -159,8 +189,10 @@ new server allocations.
     \item \textbf{Clients}: End-users who interact with the application through a web browser.
     \item \textbf{User Management Service}: Manages user authentication, authorization, and profiles, interfacing with the \textbf{User Database}.
     \item \textbf{Content Management Service}: Handles content storage and retrieval through the \textbf{Content Database} and manages file-based content with the \textbf{File System}.
+    \item \textbf{Metadata Managment Service}: Handles the metadata related to content, this service consists of a manifest of all content that has been uploaded to the \textbf{Content Management Service}, content descriptions, titles and tags.
+    \item \textbf{Metrics Service}: Keeps track of content views, likes and dislikes. 
     \item \textbf{Web Server}: Serves a static single page application used by the client to interact with the microservices.
-    \item \textbf{Databases and File System}: Separate databases for user and content data ensure efficient management and scalability. The file system stores non-database content.
+    \item \textbf{Databases and File System}: Separate databases for users and content data ensure efficient management and scalability. The file system stores non-database content.
 \end{itemize}
 
 Communication between clients and services is secured using HTTPS, 
@@ -169,35 +201,43 @@ This architecture ensures security, and scalability under varying load.
 \newline
 \begin{figure}[h]
 
-    \begin{tikzpicture}[
-        node distance=1.5cm and 2cm,
-        mynode/.style={draw, ellipse, align=center},
-        arrow1/.style={-Stealth, thick},
-        arrow2/.style={Stealth-Stealth, thick},
-        database/.style={draw, cylinder, shape border rotate=90, aspect=0.25, align=center},
-        filesystem/.style={draw, rectangle, minimum width=2cm, minimum height=1cm, align=center},
-    ]
-    
-        % Nodes
-        \node[mynode] (dns) {1 \& 2 DNS Server\\(Load Balancer)};
-        \node[mynode, below=of dns] (clients) {Clients};
-        \node[cloud, aspect=4, draw, below left=of clients] (userLogin) {User Management Services};
-        \node[cloud, aspect=4, draw, below right=of clients] (contentMgmt) {Content Management Services};
-        \node[cloud, aspect=4, draw, below=of clients] (clientHost) {Web Servers};
-        \node[database, below=of userLogin] (userDB) {User Database};
-        \node[database, below=of contentMgmt] (contentDB) {Content Database};
-        \node[filesystem, left=of contentDB] (fileSystem) {File System};
-    
-        % Arrows
-        \draw[arrow2] (dns) -- (clients) node[midway, right] {DNS Packets};
-        \draw[arrow2] (clients) -- (userLogin) node[midway, left] {Rest API Requests (https)};
-        \draw[arrow2] (clients) -- (contentMgmt) node[midway, right] {Rest API Requests (https)};
-        \draw[arrow2] (clients) -- (clientHost) node[midway, right] {https};
-        \draw[arrow1] (userDB) -- (userLogin) node[midway, right] {Read/Write};
-        \draw[arrow1] (contentDB) -- (contentMgmt) node[midway, right] {Read/Write};
-        \draw[arrow2] (fileSystem) -- (contentMgmt) node[midway, right] {Read/Write};
-    
-    \end{tikzpicture}
+    \resizebox{15cm}{10cm}{%
+        \begin{tikzpicture}[
+            node distance=1.5cm and 2cm,
+            mynode/.style={draw, ellipse, align=center},
+            arrow1/.style={-Stealth, thick},
+            arrow2/.style={Stealth-Stealth, thick},
+            database/.style={draw, cylinder, shape border rotate=90, aspect=0.25, align=center},
+            filesystem/.style={draw, rectangle, minimum width=2cm, minimum height=1cm, align=center},
+        ]
+        
+            % Nodes
+            \node[mynode] (dns) {1 \& 2 DNS Server\\(Load Balancer)};
+            \node[mynode, below=of dns] (clients) {Clients};
+            \node[cloud, aspect=4, draw, below left=of clients] (userLogin) {User Management Services};
+            \node[cloud, aspect=4, draw, below right=of clients] (contentMgmt) {Content Management Services};
+            \node[cloud, aspect=6, draw, left=of clients] (metaMgmt) {Metadata Management Services};
+            \node[cloud, aspect=6, draw, right=of clients] (metricMgmt) {Metrics Management Services};
+            \node[cloud, aspect=4, draw, below=of clients] (clientHost) {Web Servers};
+            \node[database, below=of userLogin] (userDB) {User Database};
+            \node[database, below=of contentMgmt] (contentDB) {Content Database};
+            \node[database, left=of userLogin] (metaDB) {Metadata Database};
+            \node[filesystem, left=of contentDB] (fileSystem) {File System};
+        
+            % Arrows
+            \draw[arrow2] (dns) -- (clients) node[midway, right] {DNS Packets};
+            \draw[arrow2] (clients) -- (userLogin) node[midway, left] {Rest API Requests (https)};
+            \draw[arrow2] (clients) -- (contentMgmt) node[midway, right] {Rest API Requests (https)};
+            \draw[arrow2] (clients) -- (metaMgmt)  node[midway] {https};
+            \draw[arrow2] (clients) -- (metricMgmt) node[midway] {https};
+            \draw[arrow2] (clients) -- (clientHost) node[midway, right] {https};
+            \draw[arrow1] (userDB) -- (userLogin) node[midway, right] {Read/Write};
+            \draw[arrow1] (metaDB) -- (metaMgmt) node[midway, left] {Read/Write};
+            \draw[arrow1] (contentDB) -- (contentMgmt) node[midway, right] {Read/Write};
+            \draw[arrow2] (fileSystem) -- (contentMgmt) node[midway, right] {Read/Write};
+        
+        \end{tikzpicture}
+    }
 
     \caption{A graph of the service architecture. The clouds represents clusters of multiple microservices.}
     \label{fig:AR}
@@ -209,6 +249,7 @@ This architecture ensures security, and scalability under varying load.
 The architecture does not utilize a central API gateway, Instead it relies on the clients sending requests to the relevant services.
 This is made possible by the GoodDNS \cite{heimonenSlenderman00GoodDns2023} load balancer. This architecture was selected as a central
 API gateway requires proxying all traffic.
+
 
 \pagebreak
 \printbibliography
