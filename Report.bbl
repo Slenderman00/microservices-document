@@ -1,0 +1,118 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{heimonenSlenderman00GoodDns2023}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=6d975a8d6337c5d78bbffcd5535d1dbb}{%
+           family={Heimonen},
+           familyi={H\bibinitperiod},
+           given={Joar},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{6d975a8d6337c5d78bbffcd5535d1dbb}
+      \strng{fullhash}{6d975a8d6337c5d78bbffcd5535d1dbb}
+      \strng{bibnamehash}{6d975a8d6337c5d78bbffcd5535d1dbb}
+      \strng{authorbibnamehash}{6d975a8d6337c5d78bbffcd5535d1dbb}
+      \strng{authornamehash}{6d975a8d6337c5d78bbffcd5535d1dbb}
+      \strng{authorfullhash}{6d975a8d6337c5d78bbffcd5535d1dbb}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{12}
+      \field{title}{Slenderman00/{{GoodDns}}}
+      \field{urlday}{13}
+      \field{urlmonth}{10}
+      \field{urlyear}{2024}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{jonesJSONWebToken2015}{report}{}
+      \name{author}{3}{}{%
+        {{hash=bfa19f15a98d15831cd377b8813e6672}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Michael\bibnamedelima B.},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=81e40ae87af997090fa9a9696e364c65}{%
+           family={Bradley},
+           familyi={B\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=34e6848475fd66697bfcb80787f2aef0}{%
+           family={Sakimura},
+           familyi={S\bibinitperiod},
+           given={Nat},
+           giveni={N\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Internet Engineering Task Force}%
+      }
+      \strng{namehash}{8456e57585316c5ad570515143f00129}
+      \strng{fullhash}{8456e57585316c5ad570515143f00129}
+      \strng{bibnamehash}{8456e57585316c5ad570515143f00129}
+      \strng{authorbibnamehash}{8456e57585316c5ad570515143f00129}
+      \strng{authornamehash}{8456e57585316c5ad570515143f00129}
+      \strng{authorfullhash}{8456e57585316c5ad570515143f00129}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties. The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.}
+      \field{month}{5}
+      \field{number}{RFC 7519}
+      \field{title}{{{JSON Web Token}} ({{JWT}})}
+      \field{type}{Request for {{Comments}}}
+      \field{urlday}{14}
+      \field{urlmonth}{10}
+      \field{urlyear}{2024}
+      \field{year}{2015}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.17487/RFC7519
+      \endverb
+      \verb{file}
+      \verb /home/joar/Zotero/storage/AVECKBRY/Jones et al. - 2015 - JSON Web Token (JWT).pdf
+      \endverb
+    \endentry
+    \entry{Microservices2024}{article}{}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In software engineering, a microservice architecture is an architectural pattern that arranges an application as a collection of loosely coupled, fine-grained services, communicating through lightweight protocols. A microservice-based architecture enables teams to develop and deploy their services independently, reduce code interdependency and increase readability and modularity within a codebase. This is achieved by reducing several dependencies in the codebase, allowing developers to evolve their services with limited restrictions, and reducing additional complexity. Consequently, organizations can develop software with rapid growth and scalability, as well as implement off-the-shelf services more easily. These benefits come with the cost of needing to maintain a decoupled structure within the codebase, which means its initial implementation is more complex than that of a monolithic codebase. Interfaces need to be designed carefully and treated as APIs. A microservice is analogous to a bounded context in domain-driven design.}
+      \field{annotation}{Page Version ID: 1250904068}
+      \field{journaltitle}{Wikipedia}
+      \field{langid}{english}
+      \field{month}{10}
+      \field{title}{Microservices}
+      \field{urlday}{14}
+      \field{urlmonth}{10}
+      \field{urlyear}{2024}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb /home/joar/Zotero/storage/E95F2TMB/Microservices.html
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
