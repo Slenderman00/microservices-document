@@ -181,8 +181,9 @@ This makes for a much more reliable service as we don`t risk our proxying soluti
 
 Using DNS also has a couple of drawbacks. The DNS system is complex and can be quite slow.
 Recursive DNS servers not compliant with RFC 1035 might not respect a domains TTL.
-In cases like these the service might break for users as they are feed out of date DNS data
-from non-compliant DNS servers.
+In cases like this the service might break for users as they are feed out of date DNS data
+from non-compliant DNS servers. This can be mitigated by making sure scaling of the services
+happens slowly, so that all recursive DNS servers have time to update their records.
 
 \subsection{Nodes}
 
