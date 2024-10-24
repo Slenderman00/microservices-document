@@ -41,7 +41,7 @@
 
 
 
-\section{Introdcution}
+\section{Introduction}
 This document will describe the implementation of a 
 simple scalable streaming service built using multiple microservices \cite{Microservices2024}.
 We will describe how the system handles user access control, content managment and load balancing.
@@ -177,7 +177,12 @@ There are an infinte ammount of strategies for balancing load in services consis
 And there is much to be gained from utilizing lower level protocols to achieve this. Using GoodDNS solves
 two problems, it lowers the bandwidth required as the DNS protocol as outlined in RFC 1035 is extremely light weight.
 DNS also removes the need for proxying data allowing clients to communicate directly with the relevant services.
-This makes for a much more reliable service as we don`t have to rely on NGINX or Apaches ability to proxy data.
+This makes for a much more reliable service as we don`t risk our proxying solution functioning as a bottleneck.
+
+Using DNS also has a couple of drawbacks. The DNS system is complex and can be quite slow.
+Recursive DNS servers not compliant with RFC 1035 might not respect a domains TTL.
+In cases like these the service might break for users as they are feed out of date DNS data
+from non-compliant DNS servers.
 
 \subsection{Nodes}
 
