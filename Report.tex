@@ -43,14 +43,14 @@
 
 \section{Introduction}
 This document will describe the implementation of a 
-simple scalable streaming service built using multiple microservices \cite{Microservices2024}.
-We will describe how the system handles user access control, content managment and load balancing.
+simple scalable streaming service built using multiple microservices\cite{Microservices2024}.
+We will describe how the system handles user access control, content management and load balancing.
 The most important element of this project will be JSON web tokens\cite{jonesJSONWebToken2015} 
 that allow data to pass between the different microservices. 
 The service will also feature load balancing using the GoodDNS server\cite{heimonenSlenderman00GoodDns2023}.
 
 \section{Overview} 
-In this project, we aim to develop a robust streaming service that leverages a microservices architecture to offer 
+In this project, we aim to develop a robust streaming service that leverages a microservice`s architecture to offer 
 scalable video streaming. The service is designed to cater to two main types of users: 
 administrators and registered viewers. Administrators have the ability to upload and manage content, 
 while registered users can browse and stream content.
@@ -58,8 +58,8 @@ The core functionalities include user registration and login,
 content management, and dynamic load balancing to handle varying loads. 
 The system will utilize JSON web tokens for secure data transmission between 
 microservices utilizing users as intermediates. 
-it incorporate a custom DNS solution, 
-GoodDNS \cite{heimonenSlenderman00GoodDns2023}, for load management.
+It incorporates a custom DNS solution, 
+GoodDNS\cite{heimonenSlenderman00GoodDns2023}, for load management.
 
 
 %\section{Technical background}
@@ -100,7 +100,7 @@ GoodDNS \cite{heimonenSlenderman00GoodDns2023}, for load management.
 
 \subsection{Story 3: Add New Content}
 \textbf{As an} Administrator, \\
-\textbf{I want to} add new contet to the service, \\
+\textbf{I want to} add new content to the service, \\
 \textbf{So that} users can watch the content.
 
 \begin{itemize}[label={}]
@@ -108,7 +108,7 @@ GoodDNS \cite{heimonenSlenderman00GoodDns2023}, for load management.
     \begin{enumerate}
         \item There is an "Admin" button on the home page.
         \item Clicking the button takes the user to an admin page.
-        \item The content can be submitted on the adming page.
+        \item The content can be submitted on the admin page.
         \item An error message is shown if the content submission fails.
     \end{enumerate}
 \end{itemize}
@@ -132,7 +132,7 @@ The system should efficiently distribute incoming network traffic across multipl
 servers to ensure reliability and scalability. 
 This involves using a DNS server that can dynamically allocate 
 requests to the least loaded server. The load balancing DNS server
-must have a second failover DNS server. If neceserry an infinite ammount of 
+must have a second failover DNS server. If necessary an infinite amount of 
 sub-sub DNS servers can be implemented. The time to live is used to control how often users poll the DNS servers for
 new server allocations.
 
@@ -153,34 +153,34 @@ new server allocations.
 
 \subsection{Discussion}
 There exists an almost infinite way to configure the nodes in our architecture. 
-To avoid aquiring technical debt it is
-of the upmost importance to derive an architecture fitting of our needs.
-Therefor we have derived a simple set of architectural guidelines.
+To avoid acquiring technical debt it is
+of the utmost importance to derive an architecture fitting of our needs.
+Therefore, we have derived a simple set of architectural guidelines.
 
 \begin{itemize}
     \item \textbf{Load Balancing}: The service must be able to efficiently balance load. No parts of the service can choke due to increased load.
     \item \textbf{Scalability}: All parts of the service must be able to scale as needed to account for increases in load.
-    \item \textbf{Security}: The microservices must pass data to eachother in a secure manner.
-    \item \textbf{Simplicity}: There should be no unnecesary complexity.
+    \item \textbf{Security}: The microservices must pass data to each other securely.
+    \item \textbf{Simplicity}: There should be no unnecessary complexity.
 \end{itemize}
 
-The simplest way for microservices to pass data to each other is trough the user in the form of
+The simplest way for microservices to pass data to each other is through the user in the form of
 JSON web tokens. The following scenarios can be solved using both JSON web tokens and direct communication between the micro services.
 
 \begin{itemize}
     \item \textbf{False metrics}: If metrics are not derived from the content management service but the client instead. False metrics might be reported by bad actors.
-    \item \textbf{Non existing content IDs}: If content IDs in the metadata management services manifest is not derived from the content management service. Metadata might be created for content that does not exist.
+    \item \textbf{Non-existing content IDs}: If content IDs in the metadata management services manifest is not derived from the content management service. Metadata might be created for content that does not exist.
 \end{itemize}
 
 \subsubsection{Load Balancing}
-There are an infinte ammount of strategies for balancing load in services consisting of multiple nodes.
+There are an infinite amount of strategies for balancing load in services consisting of multiple nodes.
 And there is much to be gained from utilizing lower level protocols to achieve this. Using GoodDNS solves
-two problems, it lowers the bandwidth required as the DNS protocol as outlined in RFC 1035 is extremely light weight.
+two problems, it lowers the bandwidth required as the DNS protocol as outlined in RFC 1035 is extremely lightweight.
 DNS also removes the need for proxying data allowing clients to communicate directly with the relevant services.
-This makes for a much more reliable service as we don`t risk our proxying solution functioning as a bottleneck.
+This makes for a much more reliable service as we don't risk our proxying solution functioning as a bottleneck.
 
 Using DNS also has a couple of drawbacks. The DNS system is complex and can be quite slow.
-Recursive DNS servers not compliant with RFC 1035 might not respect a domains TTL.
+Recursive DNS servers not compliant with RFC 1035 might not respect a domain's TTL.
 In cases like this the service might break for users as they are feed out of date DNS data
 from non-compliant DNS servers. This can be mitigated by making sure scaling of the services
 happens slowly, so that all recursive DNS servers have time to update their records.
@@ -191,14 +191,19 @@ happens slowly, so that all recursive DNS servers have time to update their reco
 
 \begin{itemize}
     \item \textbf{DNS Server (Load Balancer)}: Directs incoming network traffic to different servers, 
-    balancing the load and serving as a DNS resolver. All servers recieve their own sub-domains with short times to live.
+    balancing the load and serving as a DNS resolver. All servers receive their own subdomains 
+    with short times to live.
     \item \textbf{Clients}: End-users who interact with the application through a web browser.
     \item \textbf{User Management Service}: Manages user authentication, authorization, and profiles, interfacing with the \textbf{User Database}.
-    \item \textbf{Content Management Service}: Handles content storage and retrieval through the \textbf{Content Database} and manages file-based content with the \textbf{File System}.
-    \item \textbf{Metadata Managment Service}: Handles the metadata related to content, this service consists of a manifest of all content that has been uploaded to the \textbf{Content Management Service}, content descriptions, titles and tags.
+    \item \textbf{Content Management Service}: Handles content storage and retrieval through the 
+    \textbf{Content Database} and manages file-based content with the \textbf{File System}.
+    \item \textbf{Metadata Management Service}: Handles the metadata related to content, 
+    this service consists of a manifest of all content that has been uploaded to the \textbf{Content Management Service}, 
+    content descriptions, titles and tags.
     \item \textbf{Metrics Service}: Keeps track of content views, likes and dislikes. 
     \item \textbf{Web Server}: Serves a static single page application used by the client to interact with the microservices.
-    \item \textbf{Databases and File System}: Separate databases for users and content data ensure efficient management and scalability. The file system stores non-database content.
+    \item \textbf{Databases and File System}: Separate databases for users and content data ensure efficient management and scalability. 
+    The file system stores non-database content.
 \end{itemize}
 
 Communication between clients and services is secured using HTTPS, 
@@ -245,16 +250,25 @@ This architecture ensures security, and scalability under varying load.
         \end{tikzpicture}
     }
 
-    \caption{A graph of the service architecture. The clouds represents clusters of multiple microservices.}
+    \caption{A graph of the service architecture. The clouds represent clusters of multiple microservices.}
     \label{fig:AR}
 \end{figure}
 
 \clearpage
 
 \section{Notes}
+
+\subsection{GoodDNS}
 The architecture does not utilize a central API gateway, Instead it relies on the clients sending requests to the relevant services.
-This is made possible by the GoodDNS \cite{heimonenSlenderman00GoodDns2023} load balancer. This architecture was selected as a central
+This is made possible by the GoodDNS\cite{heimonenSlenderman00GoodDns2023} load balancer. This architecture was selected as a central
 API gateway requires proxying all traffic.
+
+\subsection{JSON Web Tokens}
+Most think of JSON Web Tokens as a measure for authentication. However, JSON Web Tokens are as outlined in RFC 7519\cite{jonesJSONWebToken2015} a method
+for transferring data between two parties. By passing as much of the server to server communication trough clients in the form of
+JSON Web Tokens we will greatly simplify the service architecture yet still have a service that is able to scale.
+For example, the Metadata Management Service will append and re-sign the users JSON Web Token such that the Content Management
+Service and knows what content this user has uploaded.
 
 
 \pagebreak
