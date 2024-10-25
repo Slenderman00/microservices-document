@@ -10,7 +10,6 @@
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{sectsty}
-\usepackage{color}
 \usepackage{float}
 \restylefloat{table}
 \usepackage{graphicx}
@@ -21,6 +20,7 @@
 
 \usepackage{xcolor}
 \usepackage{listings}
+
 
 \addbibresource{Library.bib}
 
@@ -38,8 +38,6 @@
 \pagebreak
 
 \tableofcontents
-
-
 
 \section{Introduction}
 This document will describe the implementation of a 
@@ -113,6 +111,22 @@ GoodDNS\cite{heimonenSlenderman00GoodDns2023}, for load management.
     \end{enumerate}
 \end{itemize}
 
+\subsection{Story 4: Add Tag to Video} 
+\textbf{As a} registered user, 
+\textbf{I want to} add tags to videos, 
+\textbf{So that} I can help improve video categorization and searchability.
+
+\begin{itemize}[label={}] 
+    \item \textbf{Acceptance Criteria:} 
+    \begin{enumerate} \item Users can navigate to the video detail page. 
+        \item There is an option to "Add Tag" next to the tags. 
+        \item Users can type a tag and submit it. 
+        \item The system validates the tag against predefined criteria (e.g., no special characters). 
+        \item A confirmation message is displayed when the tag is successfully added. 
+        \item The tag is visible to other users viewing the video with a count of how many others have added the same tag. 
+    \end{enumerate} 
+\end{itemize}
+
 \section{Requirements}
 \subsection{Users}
 The system must be able to handle user registration and login. 
@@ -152,9 +166,9 @@ new server allocations.
 \section{Architecture}
 
 \subsection{Discussion}
-There exists an almost infinite way to configure the nodes in our architecture. 
+There exists numerous ways to configure the nodes in our architecture. 
 To avoid acquiring technical debt it is
-of the utmost importance to derive an architecture fitting of our needs.
+important to derive an architecture fitting of our needs.
 Therefore, we have derived a simple set of architectural guidelines.
 
 \begin{itemize}
@@ -250,7 +264,7 @@ This architecture ensures security, and scalability under varying load.
         \end{tikzpicture}
     }
 
-    \caption{A graph of the service architecture. The clouds represent clusters of multiple microservices.}
+    \caption{Detailed service architecture showing the interaction between different microservices and databases.}
     \label{fig:AR}
 \end{figure}
 
@@ -268,7 +282,7 @@ Most think of JSON Web Tokens as a measure for authentication. However, JSON Web
 for transferring data between two parties. By passing as much of the server to server communication trough clients in the form of
 JSON Web Tokens we will greatly simplify the service architecture yet still have a service that is able to scale.
 For example, the Metadata Management Service will append and re-sign the users JSON Web Token such that the Content Management
-Service and knows what content this user has uploaded.
+Service knows what content the user has uploaded.
 
 
 \pagebreak
