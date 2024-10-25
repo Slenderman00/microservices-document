@@ -281,8 +281,8 @@ API gateway requires proxying all traffic.
 Most think of JSON Web Tokens as a measure for authentication. However, JSON Web Tokens are as outlined in RFC 7519\cite{jonesJSONWebToken2015} a method
 for transferring data between two parties. By passing as much of the server to server communication trough clients in the form of
 JSON Web Tokens we will greatly simplify the service architecture yet still have a service that is able to scale.
-For example, the Metadata Management Service will append and re-sign the users JSON Web Token such that the Content Management
-Service knows what content the user has uploaded.
+For example, the Metadata Management Service will append and re-sign the users JSON Web Token with a claim that can be used by the other server to
+validate what videos the user has access to delete.
 
 
 \pagebreak
