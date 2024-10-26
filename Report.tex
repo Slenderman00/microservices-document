@@ -247,6 +247,7 @@ This architecture ensures security, and scalability under varying load.
             \node[database, below=of userLogin] (userDB) {User Database};
             \node[database, below=of contentMgmt] (contentDB) {Content Database};
             \node[database, left=of userLogin] (metaDB) {Metadata Database};
+            \node[database, right=of contentMgmt] (metricsDB) {Metrics Database};
             \node[filesystem, left=of contentDB] (fileSystem) {File System};
         
             % Arrows
@@ -259,6 +260,7 @@ This architecture ensures security, and scalability under varying load.
             \draw[arrow1] (userDB) -- (userLogin) node[midway, right] {Read/Write};
             \draw[arrow1] (metaDB) -- (metaMgmt) node[midway, left] {Read/Write};
             \draw[arrow1] (contentDB) -- (contentMgmt) node[midway, right] {Read/Write};
+            \draw[arrow1] (metricsDB) -- (metricMgmt) node[midway, right] {Read/Write};
             \draw[arrow2] (fileSystem) -- (contentMgmt) node[midway, right] {Read/Write};
         
         \end{tikzpicture}
