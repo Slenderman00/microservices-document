@@ -16,8 +16,8 @@
 \usepackage{biblatex}
 \usepackage{tikz}
 \usetikzlibrary{shapes, arrows.meta, positioning, shapes.geometric}
+\usepackage{./timing-diagrams}
 \usepackage{changepage}
-
 \usepackage{xcolor}
 \usepackage{listings}
 
@@ -58,10 +58,6 @@ The system will utilize JSON web tokens for secure data transmission between
 microservices utilizing users as intermediates. 
 It incorporates a custom DNS solution, 
 GoodDNS\cite{heimonenSlenderman00GoodDns2023}, for load management.
-
-
-%\section{Technical background}
-%This section aims to describe the following terms:
 
 \section{User Stories}
 
@@ -226,8 +222,7 @@ with REST API requests facilitating interactions between clients and microservic
 This architecture ensures security, and scalability under varying load.
 \newline
 \begin{figure}[h]
-
-    \resizebox{15cm}{10cm}{%
+    \resizebox{15cm}{10cm}{
         \begin{tikzpicture}[
             node distance=1.5cm and 2cm,
             mynode/.style={draw, ellipse, align=center},
@@ -266,12 +261,78 @@ This architecture ensures security, and scalability under varying load.
         
         \end{tikzpicture}
     }
-
     \caption{Detailed service architecture showing the interaction between different microservices and databases.}
     \label{fig:AR}
 \end{figure}
 
 \clearpage
+
+\begin{figure}[h]
+    \begin{tikzpicture}
+        \tline{web}{4};
+        \ttimeline{web}{10};
+        \tcaption{web}{Web Server};
+        \ttick{web};
+        \tskip{web}{6};
+        \tbox{web}{1}{SPA};
+
+        \tline{client}{2};
+        \ttimeline{client}{10};
+        \tcaption{client}{Client};
+        \ttick{client};
+        \tskip{client}{1};
+        \tbox{client}{1}{DNS};
+
+        \ttick{client};
+        \tskip{client}{3};
+        \tbox{client}{1}{WEB};
+        \ttick{client};
+        \tskip{client}{1};
+        \tbox{client}{3}{Rendering};
+
+
+        \tline{dns}{0};
+        \ttimeline{dns}{10};
+        \tcaption{dns}{Good DNS};
+        \ttick{dns};
+        \tskip{dns}{2};
+        \tbox{dns}{3}{DNS Table};
+
+        \tskip{client}{-8};
+        \tskip{dns}{-3};
+        \ttextarrowU{client}{
+            \begin{tabular}{c}
+                DNS Request
+            \end{tabular}
+        };
+        \tarrowUL{client}{dns}{};
+
+        \tskip{client}{3};
+        \tskip{dns}{3};
+        \ttextarrowU{client}{
+            \begin{tabular}{c}
+                DNS Response
+            \end{tabular}
+        };
+        \tarrowLU{dns}{client}{};
+
+        \tskip{client}{1};
+        \tskip{web}{-1};
+        \ttextarrowU{web}{
+            \begin{tabular}{c}
+                HTTPS Request
+            \end{tabular}
+        };
+        \tarrowLU{client}{web}{};
+
+        \tskip{web}{1};
+        \tskip{client}{1};
+        \tarrowUL{web}{client}{};
+
+    \end{tikzpicture}
+    \caption{Timeline of a web request with DNS lookup.}
+    \label{fig:TL}
+\end{figure}
 
 \section{Notes}
 
